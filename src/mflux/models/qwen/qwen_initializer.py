@@ -92,7 +92,9 @@ class QwenImageInitializer:
     @staticmethod
     def _init_edit_models(model) -> None:
         model.vae = QwenVAE()
-        model.transformer = QwenTransformer()
+        # Qwen-Image-Edit-2511 transformer/config.json sets zero_cond_t: true (clean-timestep
+        # modulation for the conditioning-image tokens). 2509 is superseded / gone from the cache.
+        model.transformer = QwenTransformer(zero_cond_t=True)
         model.text_encoder = QwenTextEncoder()
         model.text_encoder.encoder.visual = VisionTransformer()
 
